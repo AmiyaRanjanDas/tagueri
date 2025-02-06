@@ -1,0 +1,198 @@
+// Get necessary elements
+const navbar_logo = document.querySelector('.navbar_section .logo');
+const navbar_navbar = document.querySelector('.navbar_section .navbar');
+const navbar_buttons = document.querySelector('.navbar_section .button_section');
+const homeSection = document.querySelector('.home_section');
+const bg1 = document.querySelector('.bg1');
+const bg1_bg = document.querySelector('.bg1 .bg');
+const bg2 = document.querySelector('.bg2');
+const bg2_bg = document.querySelector('.bg2 .bg');
+const bg3 = document.querySelector('.bg3');
+const leftContent = document.querySelector('.constant .all_content .left');
+const rightContent = document.querySelector('.constant .all_content .right');
+const rgh_Content = document.querySelector('.constant .all_content .right .rgh_cont');
+const leftOriginal = document.querySelector('.constant .all_content .left .orig_cont');
+const rightOriginal = document.querySelector('.constant .all_content .right .original');
+const leftFake = document.querySelector('.constant .all_content .left .fake');
+const rightFake = document.querySelector('.constant .all_content .right .fake');
+const leftBlueBox = document.querySelector('.constant .all_content .left .blue_box');
+const rightBlueText = document.querySelector('.constant .all_content .right .blue_text');
+
+// Get initial positions
+const bg1Top = bg1.offsetTop;
+const bg2Top = bg2.offsetTop;
+const bg3Top = bg3.offsetTop;
+
+// Animation function for first section (until end of bg1)
+function animationOne(scrollPosition) {
+    const progress = (scrollPosition - bg1Top) / window.innerHeight;
+    if (progress >= 0 && progress <= 1) {
+        console.log(1);
+        
+        //the img make paralax effect
+        bg1_bg.style.position=`fixed`;
+        bg2_bg.style.position=`relative`;
+        //navbar animation        
+        navbar_logo.style.transform=`translate(${progress*(-2000)}px,${progress*20}vh)`;
+        navbar_navbar.style.transform=`translate(${progress*(10000)}px,${progress*20}vh)`;
+        navbar_buttons.style.transform=`translate(${progress*(2000)}px,${progress*20}vh)`;
+        // Slide left content to the left
+        const slideDistance = Math.max(-250,progress * -400); 
+        leftContent.style.transform = `translateY(${slideDistance}px)`;
+        
+        // Fade out right content
+        const opacity1 = 1 - (progress * 1.5); 
+        rightOriginal.style.opacity = Math.max(0, opacity1);
+
+        //make the right fake h1 showed up
+        const opacity2 = (progress * 1.5);          
+        rightFake.style.opacity = Math.min(1, opacity2);
+
+        //make the bluebox open up
+        const deg = Math.min(90,progress * 150);             
+        const wid = Math.min(250,progress * 350);             
+        const hei = Math.min(250,progress * 350);             
+        leftBlueBox.style.transform=`rotate(${deg}deg)`; 
+        leftBlueBox.style.width=`${16+wid}px`; 
+        leftBlueBox.style.height=`${16+hei}px`; 
+        const lf=Math.max(0,112-progress*200);
+        const bt=Math.max(-264,7-progress*370); 
+        leftBlueBox.style.right=`${lf}px`; 
+        leftBlueBox.style.bottom=`${bt}px`; 
+        leftBlueBox.style.borderRadius = `0 ${5+deg}px 0 0`;
+
+        leftBlueBox.style.padding = `${Math.min(35,deg)}px ${Math.min(32,deg)}px ${Math.min(20,deg)}px ${Math.min(16,deg)}px`;
+        leftBlueBox.style.color = `rgb(${
+            Math.min(252, Math.floor(progress * 300))
+        }, ${
+            Math.min(252, Math.floor(145 + progress * 300))
+        }, ${
+            Math.min(252, Math.floor(233 + progress * 300))
+        })`;
+
+        // Reset other properties
+        leftFake.style.opacity = 0;
+        leftBlueBox.style.border = `0px`;
+    }
+}
+
+// Animation function for second section (until end of bg2)
+function animationTwo(scrollPosition) {
+    const progress = (scrollPosition - bg2Top) / window.innerHeight;
+    if (progress >= 0 && progress <= 1) {
+        console.log(2);
+        
+        //the img make paralax effect
+        bg1_bg.style.position=`relative`;
+        bg2_bg.style.position=`fixed`;
+        bg2_bg.style.top=`0`;
+        // Reverse the progress 
+        const reverseProgress = 1 - progress;
+        const slideDistance = Math.max(-250, reverseProgress * -400);
+        leftContent.style.transform = `translateY(${slideDistance}px)`;
+        const deg = Math.min(90, reverseProgress * 150);
+        const wid = Math.min(250, reverseProgress * 350);
+        const hei = Math.min(250, reverseProgress * 350);
+        leftBlueBox.style.transform = `rotate(${deg}deg)`;
+        leftBlueBox.style.width = `${16 + wid}px`;
+        leftBlueBox.style.height = `${16 + hei}px`;        
+        const lf = Math.max(0, 112 - reverseProgress * 200);
+        const bt = Math.max(-264, 7 - reverseProgress * 370);
+        leftBlueBox.style.right = `${lf}px`;
+        leftBlueBox.style.bottom = `${bt}px`;
+        leftBlueBox.style.borderRadius = `0 ${5 + deg}px 0 0`;
+        leftBlueBox.style.padding = `${Math.min(35, deg)}px ${Math.min(32, deg)}px ${Math.min(20, deg)}px ${Math.min(16, deg)}px`;
+        
+        const alpha = Math.max(0, (100 - progress * 200) / 100);  // Convert to 0-1 range
+        leftBlueBox.style.background = `rgba(0, 145, 233, ${alpha})`;
+        leftBlueBox.style.color = `rgba(255, 255, 255, ${alpha})`;
+
+        leftBlueBox.style.border = `${Math.min(2,progress*5-2)}px solid white`;
+        
+        //animation func 2
+        const slideDistance2 = Math.min(250,progress * 400); 
+        rgh_Content.style.transform = `translateY(${slideDistance2}px)`;
+        
+        // Fade out right content
+        const opacity3 = 1 - (progress * 1.5); 
+        leftOriginal.style.opacity = Math.max(0, opacity3);
+        rightFake.style.opacity=Math.max(0, opacity3);
+
+        //make the right fake h1 showed up
+        const opacity4 = (progress * 1.5);          
+        leftFake.style.opacity = Math.min(1, opacity4);
+        rightOriginal.style.opacity = Math.min(1, opacity4);
+ 
+        rightBlueText.style.opacity=Math.min(1, progress*2-1);        
+    }
+}
+
+// Animation function for third section (until end of bg3)
+function animationThree(scrollPosition) {
+    bg2_bg.style.position=`relative`;
+
+    const progress = (scrollPosition - bg3Top) / window.innerHeight;
+    if (progress >= 0 && progress <= 1) {
+        console.log(3);
+
+        rightBlueText.style.opacity=Math.min(1, 1-progress*2.5);
+
+         // Slide left content to the left
+         const slideDistance = Math.max(-300,progress * -600); 
+         leftContent.style.transform = `translateY(${slideDistance}px)`;
+    }
+}
+
+// Main scroll handler
+let ticking = false;
+
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Reset styles when scrolling back up
+            if (scrollPosition < bg2Top) {
+                leftFake.style.opacity = 0;
+                rightFake.style.opacity = 0;
+                leftContent.style.opacity = 1;
+                rightContent.style.opacity = 1;
+            }
+            
+            // Apply appropriate animations based on scroll position
+            if (scrollPosition < bg2Top) {
+                animationOne(scrollPosition);
+            } else if (scrollPosition < bg3Top) {
+                animationTwo(scrollPosition);
+            } else {
+                animationThree(scrollPosition);
+            }
+            
+            ticking = false;
+        });
+        ticking = true;
+    }
+});
+
+// Add CSS transitions for smooth animations
+// const style = document.createElement('style');
+// style.textContent = `
+//     .constant .all_content .left,
+//     .constant .all_content .right,
+//     .constant .all_content .left .fake,
+//     .constant .all_content .right .fake {
+//         transition: all 0.3s ease-out;
+//     }
+// `;
+// document.head.appendChild(style);
+
+
+
+1.Scroll snapping is not implemented after the parallax section
+2.footer animation is not as expected(should be fixed)
+3.The smooth page~ scroll feature is not working as expected.
+4.Side menu is not matching with XD
+
+
+Hello Ramesh these are some of the comments from UX Team,
+we are almost there. But subtle things. I will check with Prashanth and Team and let you know whats the next step here.
